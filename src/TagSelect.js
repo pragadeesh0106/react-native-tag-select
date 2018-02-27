@@ -92,7 +92,7 @@ class TagSelect extends React.Component {
     const value = { ...this.state.value };
     const found = this.state.value[item[this.props.keyAttr]];
     if (callClose) {
-      this.handleClose(item, false);
+      this.handleClose(item);
     }
     // Item is on array, so user is removing the selection
     if (found) {
@@ -113,10 +113,7 @@ class TagSelect extends React.Component {
     });
   };
 
-  handleClose = (item, callHandleSelect) => {
-    if (callHandleSelect) {
-      this.handleSelectItem(item, false);
-    }
+  handleClose = (item) => {
     const removeId = item.id;
 
     // Item is on array, so user is removing the selection
@@ -140,7 +137,7 @@ class TagSelect extends React.Component {
               key={i[this.props.keyAttr]}
               onPress={this.handleSelectItem.bind(this, i, true)}
               selected={this.state.value[i[this.props.keyAttr]] && true}
-              onClose={this.handleClose.bind(this, i, true)}
+              onClose={this.handleClose.bind(this, i)}
             />
           );
         }) : <View />}
