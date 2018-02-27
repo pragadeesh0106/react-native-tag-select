@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {
   View,
   StyleSheet,
+  Button
 } from 'react-native';
 
 import TagSelectItem from './TagSelectItem';
@@ -16,6 +17,7 @@ class TagSelect extends React.Component {
     max: PropTypes.number,
     onMaxError: PropTypes.func,
     onItemPress: PropTypes.func,
+    setPropData: PropTypes.func,    
     itemStyle: PropTypes.any,
     itemStyleSelected: PropTypes.any,
     itemLabelStyle: PropTypes.any,
@@ -50,7 +52,14 @@ class TagSelect extends React.Component {
 
       this.setState({ value });
     }
+    this.setState({ data: this.props.data });
   }
+
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.data && nextProps.data.length > 0) {
+  //     this.setState({ data: nextProps.data });
+  //   }
+  // }
 
   /**
    * @description return total of itens selected
@@ -79,10 +88,12 @@ class TagSelect extends React.Component {
    * @param {Object} item
    * @return {Void}
    */
-  handleSelectItem = (item) => {
+  handleSelectItem = (item, callClose) => {
     const value = { ...this.state.value };
     const found = this.state.value[item[this.props.keyAttr]];
-
+    if (callClose) {
+      this.handleClose(item, false);
+    }
     // Item is on array, so user is removing the selection
     if (found) {
       delete value[item[this.props.keyAttr]];
@@ -102,20 +113,37 @@ class TagSelect extends React.Component {
     });
   };
 
+  handleClose = (item, callHandleSelect) => {
+    if (callHandleSelect) {
+      this.handleSelectItem(item, false);
+    }
+    const removeId = item.id;
+
+    // Item is on array, so user is removing the selection
+    if (removeId) {
+      const newData = this.state.data.filter(data => data.id != removeId)
+      this.props.setPropData(newData);
+      this.setState({
+        data: newData
+      })
+    }
+  };
+
   render() {
     return (
       <View style={styles.list}>
-        {this.props.data.map((i) => {
+        {this.state.data && this.state.data.length > 0 ? this.state.data.map((i) => {
           return (
             <TagSelectItem
               {...this.props}
               label={i[this.props.labelAttr]}
               key={i[this.props.keyAttr]}
-              onPress={this.handleSelectItem.bind(this, i)}
+              onPress={this.handleSelectItem.bind(this, i, true)}
               selected={this.state.value[i[this.props.keyAttr]] && true}
+              onClose={this.handleClose.bind(this, i, true)}
             />
           );
-        })}
+        }) : <View />}
       </View>
     );
   }

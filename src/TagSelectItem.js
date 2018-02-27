@@ -18,8 +18,24 @@ const TagSelectItem = (props) => {
     props.selected && ([styles.labelTextSelected].concat(props.itemLabelStyleSelected))
   ];
 
+  const innerCloseStyle = [
+    ([styles.innerClose].concat(props.itemStyle)),
+    props.selected && ([styles.innerSelectedClose].concat(props.itemStyleSelected))
+  ];
+
+  const labelCloseStyle = [
+    ([styles.labelTextClose].concat(props.itemLabelStyle)),
+    props.selected && ([styles.labelTextSelectedClose].concat(props.itemLabelStyleSelected))
+  ];
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={props.onClose} activeOpacity={props.activeOpacity}>
+        <View style={innerCloseStyle}>
+          <Text style={labelCloseStyle} numberOfLines={1}>
+            X
+          </Text>
+        </View>
+      </TouchableOpacity>
       <TouchableOpacity onPress={props.onPress} activeOpacity={props.activeOpacity}>
         <View style={innerStyle}>
           <Text style={labelStyle} numberOfLines={1}>
@@ -57,20 +73,34 @@ export const styles = StyleSheet.create({
   container: {
     marginBottom: 10,
     marginRight: 10,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   inner: {
     padding: 10,
-    backgroundColor: '#F2EFF5',
+    backgroundColor: '#2694CE',
     borderRadius: 17.5,
   },
   innerSelected: {
-    backgroundColor: '#B42131',
+    backgroundColor: '#2694CE',
   },
   labelText: {
-    color: '#92909C',
+    color: '#FFF',
   },
   labelTextSelected: {
     color: '#FFF',
+  },
+  innerClose: {
+    padding: 10,
+    borderRadius: 17.5,
+  },
+  innerSelectedClose: {
+  },
+  labelTextClose: {
+    color: '#92909C',
+  },
+  labelTextSelectedClose: {
+    color: '#92909C',
   },
 });
 
