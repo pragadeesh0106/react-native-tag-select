@@ -17,7 +17,7 @@ class TagSelect extends React.Component {
     max: PropTypes.number,
     onMaxError: PropTypes.func,
     onItemPress: PropTypes.func,
-    setPropData: PropTypes.func,    
+    setPropData: PropTypes.func,
     itemStyle: PropTypes.any,
     itemStyleSelected: PropTypes.any,
     itemLabelStyle: PropTypes.any,
@@ -105,12 +105,10 @@ class TagSelect extends React.Component {
 
       value[item[this.props.keyAttr]] = item;
     }
-
-    return this.setState({ value }, () => {
-      if (this.props.onItemPress) {
-        this.props.onItemPress(item);
-      }
-    });
+    if (this.props.onItemPress) {
+      this.props.onItemPress(item);
+    }
+    return this.setState({ value });
   };
 
   handleClose = (item) => {
