@@ -52,7 +52,6 @@ class TagSelect extends React.Component {
 
       this.setState({ value });
     }
-    this.setState({ data: this.props.data });
   }
 
   // componentWillReceiveProps(nextProps) {
@@ -116,18 +115,15 @@ class TagSelect extends React.Component {
 
     // Item is on array, so user is removing the selection
     if (removeId) {
-      const newData = this.state.data.filter(data => data.id != removeId)
+      const newData = this.props.data.filter(data => data.id != removeId)
       this.props.setPropData(newData);
-      this.setState({
-        data: newData
-      })
     }
   };
 
   render() {
     return (
       <View style={styles.list}>
-        {this.state.data && this.state.data.length > 0 ? this.state.data.map((i) => {
+        {this.props.data && this.props.data.length > 0 ? this.props.data.map((i) => {
           return (
             <TagSelectItem
               {...this.props}
